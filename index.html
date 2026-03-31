@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Millham Green — Everyone's very friendly. At first.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Caveat:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #f4f0e6;
+    --parchment: #e8e0cc;
+    --ink: #1a1208;
+    --faded-ink: #3d3020;
+    --green-dark: #2c3d2a;
+    --green-mid: #4a6647;
+    --church-grey: #8a8278;
+    --pond-blue: #6b8ea6;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── HERO ─────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--green-dark);
+  }
+
+  .hero-image {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom,
+        rgba(26,18,8,0.15) 0%,
+        rgba(26,18,8,0.0) 30%,
+        rgba(26,18,8,0.4) 70%,
+        rgba(26,18,8,0.88) 100%
+      ),
+      /* ── SWAP for Grok image: url('images/millham-green-village.jpg') ── */
+      url('images/millham-green-village.jpg');
+    background-size: cover;
+    background-position: center 55%;
+    will-change: transform;
+  }
+
+  .hero-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 2rem;
+    max-width: 780px;
+  }
+
+  .village-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 400;
+    color: var(--cream);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    margin-bottom: 0.3em;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    opacity: 0;
+    animation: fadeUp 1.4s ease forwards 0.3s;
+  }
+
+  .village-rule {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    margin: 0.8rem 0 1.4rem;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.8s;
+  }
+
+  .village-rule span {
+    height: 1px;
+    width: 80px;
+    background: linear-gradient(to right, transparent, rgba(244,240,230,0.5), transparent);
+  }
+
+  .village-rule em {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    color: rgba(244,240,230,0.6);
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .tagline {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    color: rgba(244,240,230,0.92);
+    line-height: 1.4;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 1.2s;
+  }
+
+  .tagline strong { color: var(--cream); font-weight: 400; }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 2.5s;
+  }
+
+  .hero-scroll span {
+    display: block;
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, rgba(244,240,230,0), rgba(244,240,230,0.6));
+    margin: 0 auto;
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* ─── LETTER ─────────────────────────────────────── */
+  .note-section {
+    background: var(--cream);
+    display: flex;
+    justify-content: center;
+    padding: 6rem 2rem;
+    position: relative;
+  }
+
+  .note-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(to right, transparent, var(--green-mid), transparent);
+  }
+
+  .letter-wrap { max-width: 600px; width: 100%; }
+
+  .letter-label {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    color: var(--church-grey);
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+  }
+
+  .letter {
+    background: #faf7ef;
+    border: 1px solid rgba(139,98,68,0.2);
+    border-radius: 2px;
+    padding: 3rem 3.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 8px 40px rgba(0,0,0,0.08);
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .letter.visible { opacity: 1; transform: translateY(0); }
+
+  .letter::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 40px 40px 0;
+    border-color: transparent var(--parchment) transparent transparent;
+  }
+
+  .letter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(139,98,68,0.12);
+  }
+
+  .letter-from { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--faded-ink); }
+  .letter-from small { display: block; font-family: 'EB Garamond', serif; font-style: italic; font-size: 0.82rem; color: var(--church-grey); margin-top: 0.2rem; }
+  .letter-date { font-family: 'EB Garamond', serif; font-style: italic; font-size: 0.85rem; color: var(--church-grey); text-align: right; }
+  .letter-body { font-family: 'Caveat', cursive; font-size: 1.25rem; line-height: 1.8; color: var(--faded-ink); }
+  .letter-body p + p { margin-top: 1em; }
+  .letter-sig { margin-top: 2rem; font-family: 'Caveat', cursive; font-size: 1.5rem; color: var(--ink); }
+  .letter-sig small { display: block; font-family: 'Caveat', cursive; font-style: normal; font-size: 1.1rem; color: var(--church-grey); margin-top: 0.2rem; }
+
+  /* ─── ENTER CTA ──────────────────────────────────── */
+  .enter-section {
+    background: var(--green-dark);
+    padding: 5rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .enter-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(74,102,71,0.4) 0%, transparent 70%);
+  }
+
+  .enter-section h2 { font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(1.5rem, 4vw, 2.5rem); color: var(--cream); margin-bottom: 1rem; position: relative; }
+  .enter-section p { color: rgba(244,240,230,0.65); font-style: italic; max-width: 480px; margin: 0 auto 2.5rem; font-size: 1.05rem; position: relative; }
+
+  .btn-enter {
+    display: inline-block;
+    background: transparent;
+    color: var(--cream);
+    border: 1px solid rgba(244,240,230,0.5);
+    padding: 0.9rem 3rem;
+    font-family: 'EB Garamond', serif;
+    font-size: 1.05rem;
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .btn-enter::before { content: ''; position: absolute; inset: 0; background: rgba(244,240,230,0.08); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+  .btn-enter:hover::before { transform: scaleX(1); }
+  .btn-enter:hover { border-color: rgba(244,240,230,0.8); }
+
+  /* ─── CAST GRID ──────────────────────────────────── */
+  .cast-section { background: var(--parchment); padding: 6rem 2rem; }
+  .cast-section h2 { font-family: 'Playfair Display', serif; font-weight: 400; text-align: center; font-size: clamp(1.6rem, 4vw, 2.4rem); color: var(--ink); margin-bottom: 0.5rem; }
+  .section-sub { text-align: center; font-style: italic; color: var(--church-grey); margin-bottom: 3.5rem; font-size: 1rem; }
+
+  .cast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .cast-card {
+    background: var(--cream);
+    border: 1px solid rgba(139,98,68,0.15);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .cast-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+
+  .cast-portrait {
+    height: 160px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Swap .portrait-initial for <img src="images/[name].jpg"> when Grok portraits are ready */
+  .cast-card:nth-child(1) .cast-portrait { background: linear-gradient(135deg, #2c3d5a 0%, #5a6e8a 100%); }
+  .cast-card:nth-child(2) .cast-portrait { background: linear-gradient(135deg, #3a2a1a 0%, #7a5a30 100%); }
+  .cast-card:nth-child(3) .cast-portrait { background: linear-gradient(135deg, #3d1a3a 0%, #8a4a78 100%); }
+  .cast-card:nth-child(4) .cast-portrait { background: linear-gradient(135deg, #1a2c3a 0%, #4a7a9a 100%); }
+  .cast-card:nth-child(5) .cast-portrait { background: linear-gradient(135deg, #1a3a2a 0%, #3a7a58 100%); }
+  .cast-card:nth-child(6) .cast-portrait { background: linear-gradient(135deg, #3a3a1a 0%, #6a6a2a 100%); }
+  .cast-card:nth-child(7) .cast-portrait { background: linear-gradient(135deg, #1a2a3a 0%, #2a4a6a 100%); }
+
+  .portrait-initial { font-family: 'Playfair Display', serif; font-size: 4rem; color: rgba(244,240,230,0.2); font-style: italic; user-select: none; }
+  .cast-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .cast-info { padding: 1.2rem 1.4rem; }
+  .cast-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--ink); margin-bottom: 0.15rem; }
+  .cast-role { font-style: italic; font-size: 0.88rem; color: var(--church-grey); line-height: 1.4; }
+
+  /* ─── FOUND FRAGMENTS ────────────────────────────── */
+  .fragment-section { background: var(--cream); padding: 6rem 2rem; display: flex; justify-content: center; }
+  .fragment-inner { max-width: 620px; width: 100%; }
+  .fragment-inner h2 { font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(1.4rem, 3vw, 2rem); color: var(--ink); margin-bottom: 0.5rem; font-style: italic; }
+  .fragment-inner .section-sub { text-align: left; margin-bottom: 2.5rem; }
+
+  .fragment-note {
+    border-left: 2px solid rgba(139,98,68,0.25);
+    padding: 1.2rem 1.6rem;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: translateX(-12px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fragment-note.visible { opacity: 1; transform: translateX(0); }
+  .fragment-note:nth-child(2) { transition-delay: 0.1s; }
+  .fragment-note:nth-child(3) { transition-delay: 0.2s; }
+  .fragment-note:nth-child(4) { transition-delay: 0.3s; }
+
+  .fragment-meta { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--church-grey); margin-bottom: 0.6rem; }
+  .fragment-text { font-family: 'Caveat', cursive; font-size: 1.2rem; color: var(--faded-ink); line-height: 1.7; }
+
+  /* ─── FOOTER ─────────────────────────────────────── */
+  footer { background: var(--ink); color: rgba(244,240,230,0.4); text-align: center; padding: 2rem; font-size: 0.85rem; font-style: italic; }
+  footer strong { color: rgba(244,240,230,0.7); font-weight: 400; font-family: 'Playfair Display', serif; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes scrollPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+
+  @media (max-width: 600px) {
+    .letter { padding: 2rem 1.8rem; }
+    .letter-header { flex-direction: column; gap: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ══════════════════════════════════════════════ -->
+<!-- Image note: set url('images/millham-green-village.jpg') in .hero-image CSS above -->
+<section class="hero">
+  <div class="hero-image"></div>
+  <div class="hero-content">
+    <h1 class="village-name">Millham Green</h1>
+    <div class="village-rule">
+      <span></span>
+      <em>Est. long before you arrived</em>
+      <span></span>
+    </div>
+    <p class="tagline">Everyone's very friendly.<br><strong>At first.</strong></p>
+  </div>
+  <div class="hero-scroll"><span></span></div>
+</section>
+
+
+<!-- ═══ GERALDINE'S LETTER ════════════════════════════════ -->
+<section class="note-section">
+  <div class="letter-wrap">
+    <p class="letter-label">Found on your doormat at Pondside Cottage</p>
+    <div class="letter" id="letter">
+      <div class="letter-header">
+        <div class="letter-from">
+          The Reverend G. Marsh
+          <small>St Mary's Vicarage, Millham Green</small>
+        </div>
+        <div class="letter-date">This morning<br><small style="color:var(--pond-blue)">handwritten</small></div>
+      </div>
+      <div class="letter-body">
+        <p>Hello dear. I'm Geraldine, vicar here at St Mary's.</p>
+        <p>I saw the light on in the pond cottage last night — welcome to Millham Green. It's a quiet place, mostly. People will stop you for a chat. They'll tell you things. Some of it will even be true.</p>
+        <p>Do come to the harvest supper. Everyone does.</p>
+      </div>
+      <div class="letter-sig">
+        Geraldine
+        <small>P.S. The flower rota is posted inside the porch. No obligation. Obviously.</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ ENTER CTA ══════════════════════════════════════════ -->
+<section class="enter-section">
+  <h2>You've just moved in.</h2>
+  <p>The village already knows. The question is what they'll find out about you.</p>
+  <a href="#" class="btn-enter">Step Outside</a>
+</section>
+
+
+<!-- ═══ CAST — all seven confirmed characters ══════════════ -->
+<section class="cast-section">
+  <h2>The Villagers</h2>
+  <p class="section-sub">Each one remembers everything you've said to them.</p>
+
+  <div class="cast-grid">
+
+    <div class="cast-card">
+      <div class="cast-portrait"><span class="portrait-initial">G</span></div>
+      <div class="cast-info">
+        <div class="cast-name">Rev. Geraldine Marsh</div>
+        <div class="cast-role">Vicar — St Mary's. Knows more than she says.</div>
+      </div>
+    </div>
+
+    <div class="cast-card">
+      <div class="cast-portrait"><span class="portrait-initial">A</span></div>
+      <div class="cast-info">
+        <div class="cast-name">Arthur Bevins</div>
+        <div class="cast-role">Farmer. Has been here longest. By some distance.</div>
+      </div>
+    </div>
+
+    <div class="cast-card">
+      <div class="cast-portrait"><span class="portrait-initial">J</span></div>
+      <div class="cast-info">
+        <div class="cast-name">Jade Rampling-Cross</div>
+        <div class="cast-role">Elmwood Rise. New money, ancient instincts.</div>
+      </div>
+    </div>
+
+    <div class="cast-card">
+      <div class="cast-portrait"><span class="portrait-initial">R</span></div>
+      <div class="cast-info">
+        <div class="cast-name">Ray Toper</div>
+        <div class="cast-role">The Miller's Arms. First drink's always on the house.</div>
+      </div>
+    </div>
+
+    <div class="cast-card">
+      <div class="cast-portrait"><span class="portrait-initial">C</span></div>
+      <div class="cast-info">
+        <div class="cast-name">Chantelle Briggs</div>
+        <div class="cast-role">Behind the bar. Sees everything. Knows nothing. Or so she thinks.</div>
+      </div>
+    </div>
+
+    <div class="cast-card">
+      <div class="cast-portrait"><span class="portrait-initial">D</span></div>
+      <div class="cast-info">
+        <div class="cast-name">Dave Nutley</div>
+        <div class="cast-role">Conspiracy corner. Was here before you. Will be here after.</div>
+      </div>
+    </div>
+
+    <div class="cast-card">
+      <div class="cast-portrait"><span class="portrait-initial">T</span></div>
+      <div class="cast-info">
+        <div class="cast-name">Tarquin Worthington-Smythe MP</div>
+        <div class="cast-role">Parish Councillor. Concerned. Always so very concerned.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══ FOUND FRAGMENTS TEASER ════════════════════════════ -->
+<section class="fragment-section">
+  <div class="fragment-inner">
+    <h2>Something left behind</h2>
+    <p class="section-sub">The previous tenant of Pondside Cottage kept notes. You found three.</p>
+
+    <div class="fragment-note" id="frag1">
+      <div class="fragment-meta">Water-damaged journal — back bedroom floorboard</div>
+      <div class="fragment-text">"The agent — Percival, absurd name — kept saying I'd feel at home here. Not comfortable. Not settled. <em>Home.</em> Specific word. I didn't tell anyone I was coming."</div>
+    </div>
+
+    <div class="fragment-note" id="frag2">
+      <div class="fragment-meta">Torn page, folded — inglenook, behind loose brick</div>
+      <div class="fragment-text">"I tried to leave today. Got as far as the old mill. The road was fine. I was back at Pondside in twenty minutes. I don't remember turning around."</div>
+    </div>
+
+    <div class="fragment-note" id="frag3">
+      <div class="fragment-meta">Scratched into the inside of the kitchen cupboard</div>
+      <div class="fragment-text" style="font-family:'EB Garamond',serif; letter-spacing:0.05em; font-style:normal;">THE CALENDAR IS NOT THE CHURCH CALENDAR<br>DO NOT GO TO THE SUPPER</div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══ FOOTER ══════════════════════════════════════════════ -->
+<footer>
+  <strong>Millham Green</strong> &nbsp;·&nbsp; A village with a long memory &nbsp;·&nbsp; millhamgreen.co.uk
+</footer>
+
+
+<script>
+  // Scroll reveal
+  const reveals = [
+    { id: 'letter', threshold: 0.2 },
+    { id: 'frag1', threshold: 0.15 },
+    { id: 'frag2', threshold: 0.15 },
+    { id: 'frag3', threshold: 0.15 },
+  ];
+
+  reveals.forEach(({ id, threshold }) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); obs.unobserve(entry.target); }
+      });
+    }, { threshold });
+    obs.observe(el);
+  });
+
+  // Parallax
+  const heroImg = document.querySelector('.hero-image');
+  window.addEventListener('scroll', () => {
+    heroImg.style.transform = `translateY(${window.scrollY * 0.25}px)`;
+  }, { passive: true });
+</script>
+
+</body>
+</html>
